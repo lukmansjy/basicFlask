@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
 @app.route('/')
@@ -13,4 +13,11 @@ def profile(username):
 def blog(blogId):
     return 'Kamu berada di blog nomor %s' % blogId
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if(request.method == 'POST'):
+        return 'Email kamu adalah ' + request.form['email']
+
+    return render_template('login.html')
 app.run(debug=True)
