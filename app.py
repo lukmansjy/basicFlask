@@ -1,17 +1,13 @@
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Halaman index'
-
-@app.route('/setting')
-def setting():
-    return 'Halaman setting'
+    return render_template('index.html')
 
 @app.route('/profile/<username>')
 def profile(username):
-    return 'Halo kamu berada dihalaman profil %s' % username
+    return render_template('profile.html', username=username)
 
 @app.route('/blog/<int:blogId>')
 def blog(blogId):
