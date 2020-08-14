@@ -7,5 +7,10 @@
 </head>
 <body>
     <h1>Home Page</h1>
+    {% if not search %}
+        <p>Selamat datang</p>
+    {% else %}
+        <p>Hasil pencarian {{ search }}</p>
+    {% endif %}
 </body>
 </html>

@@ -4,10 +4,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     search = request.args.get('search')
-    video = request.args.get('video')
-    if not search:
-        return render_template('index.html')
-    return 'Hasil search adalah ' + search + ' Video: ' + video
+    return render_template('index.html', search=search)
 
 @app.route('/profile/<username>')
 def profile(username):
