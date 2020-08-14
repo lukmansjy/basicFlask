@@ -1,6 +1,10 @@
-from flask import Flask, render_template, request, make_response, session, redirect, url_for, flash
+from flask import Flask, render_template, request, make_response, session, redirect, url_for, flash, abort
 app = Flask(__name__)
 app.secret_key = "randomString"
+
+@app.errorhandler(401)
+def errorPage(e):
+    return render_template('error.html'), 401
 
 @app.route('/')
 def index():
@@ -19,6 +23,10 @@ def blog(blogId):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if(request.method == 'POST'):
+        # Error page
+        if request.form['password'] == '':
+            abort(401)
+
         # Cookie
         resp = make_response('Email kamu adalah ' + request.form['email'])
         resp.set_cookie('email', request.form['email'])
