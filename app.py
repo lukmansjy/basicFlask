@@ -3,7 +3,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    search = request.args.get('search')
+    video = request.args.get('video')
+    if not search:
+        return render_template('index.html')
+    return 'Hasil search adalah ' + search + ' Video: ' + video
 
 @app.route('/profile/<username>')
 def profile(username):
@@ -20,4 +24,6 @@ def login():
         return 'Email kamu adalah ' + request.form['email']
 
     return render_template('login.html')
+
+
 app.run(debug=True)
