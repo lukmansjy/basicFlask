@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, session, redirect, url_for
+from flask import Flask, render_template, request, make_response, session, redirect, url_for, flash
 app = Flask(__name__)
 app.secret_key = "randomString"
 
@@ -26,7 +26,9 @@ def login():
         # Session
         session['username'] = 'lukman'
 
-        return resp
+        flash('Kamu berhasil login...', 'success')
+
+        return redirect(url_for('profile', username=session['username']))
 
     if 'username' in session:
         username = session['username']
