@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, make_response, session, redirect, url_for, flash, abort
+from werkzeug.utils import secure_filename
+import os
+
 app = Flask(__name__)
 app.secret_key = "randomString"
 
@@ -54,5 +57,31 @@ def getCookie():
 def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
+
+# Upload
+ALLOWED_EXTENSION = set(['png', 'jpeg', 'jpg'])
+app.config['UPLOAD_FOLDER']  = 'uploads'
+
+def allowedFile(filename):
+    return '.' in filename and filename.split('.', 1)[1].lower() in ALLOWED_EXTENSION
+
+@app.route('/upload', methods=['GET', 'POST'])
+def uploadFile():
+    if request.method == 'POST':
+
+        file = request.files['file']
+
+        if 'file' not in request.files:
+            return redirect(request.url)
+        
+        if file.filename == '':
+            return redirect(request.url)
+        
+        if file and allowedFile(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return 'file berhasil di upload di ' + filename
+
+    return render_template('upload.html')
 
 app.run(debug=True)
